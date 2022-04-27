@@ -1,6 +1,7 @@
 from os import system
 import random
 import time
+import ai
 
 def valid_move(move, board):
     if move.isdigit():
@@ -9,7 +10,7 @@ def valid_move(move, board):
             return True
     return False
 
-def play_move(player_type, moves, board):
+def play_move(player_type, player_ai, moves, board):
     turn = len(board) + 1
     if turn % 2 == 1:
         player = "Player 1"
@@ -23,7 +24,10 @@ def play_move(player_type, moves, board):
                 break
             print("Invalid move!")
     if player_type == "ai":
-        move = ai_move(board)
+        if player_ai == 1:
+            move = ai.level_1(board)
+        if player_ai == 2:
+            move = ai.level_2(board)
         print(f"{player}: {move}")
         time.sleep(2)
     moves.append(move)
@@ -78,16 +82,20 @@ def main():
     x = []
     o = []
     board = []
-    player1_type = "human"
+    #SET PLAYER TYPE
+    player1_type = "ai"
     player2_type = "ai"
+    #SET AI LEVELS
+    player1_ai = 2
+    player2_ai = 1
     system('cls')
     for turn in range(1, 10):
         display_board(x, o)
         print(f"\n{board}\n")
         if turn % 2 == 1:
-            play_move(player1_type, x, board)
+            play_move(player1_type, player1_ai, x, board)
         else:
-            play_move(player2_type, o, board)
+            play_move(player2_type, player2_ai, o, board)
         system('cls')
         status = check_win(x, o)
         if status:
